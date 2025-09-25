@@ -43,8 +43,11 @@ export class EnhancedWeatherController {
     try {
       this.logger.log(`Fetching current weather for: ${query.city}`);
       return await this.weatherService.getCurrentWeather(query.city);
-    } catch (error: any) {
-      this.logger.error(`Error fetching weather: ${error.message}`);
+    } catch (error: unknown) {
+      // Changed to unknown
+      this.logger.error(
+        `Error fetching weather: ${error instanceof Error ? error.message : 'Unknown error'}`,
+      ); // Fixed ternary
 
       if (error instanceof HttpException) {
         throw error;
@@ -77,8 +80,11 @@ export class EnhancedWeatherController {
     try {
       this.logger.log(`Fetching forecast for: ${query.city}`);
       return await this.weatherService.getForecast(query.city);
-    } catch (error: any) {
-      this.logger.error(`Error fetching forecast: ${error.message}`);
+    } catch (error: unknown) {
+      // Changed to unknown
+      this.logger.error(
+        `Error fetching forecast: ${error instanceof Error ? error.message : 'Unknown error'}`,
+      ); // Fixed ternary
 
       if (error instanceof HttpException) {
         throw error;
@@ -101,8 +107,11 @@ export class EnhancedWeatherController {
   async getSearchHistory(): Promise<SearchHistoryResponseDto[]> {
     try {
       return await this.weatherService.getSearchHistory();
-    } catch (error: any) {
-      this.logger.error(`Failed to fetch search history: ${error.message}`);
+    } catch (error: unknown) {
+      // Changed to unknown
+      this.logger.error(
+        `Failed to fetch search history: ${error instanceof Error ? error.message : 'Unknown error'}`,
+      ); // Fixed ternary
       throw new HttpException(
         'Failed to fetch search history',
         HttpStatus.INTERNAL_SERVER_ERROR,
@@ -120,8 +129,11 @@ export class EnhancedWeatherController {
   async getCities(): Promise<CityResponseDto[]> {
     try {
       return await this.weatherService.getCities();
-    } catch (error: any) {
-      this.logger.error(`Failed to fetch cities: ${error.message}`);
+    } catch (error: unknown) {
+      // Changed to unknown
+      this.logger.error(
+        `Failed to fetch cities: ${error instanceof Error ? error.message : 'Unknown error'}`,
+      ); // Fixed ternary
       throw new HttpException(
         'Failed to fetch cities',
         HttpStatus.INTERNAL_SERVER_ERROR,
