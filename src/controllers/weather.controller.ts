@@ -11,8 +11,6 @@ import { EnhancedWeatherService } from '../services/enhanced-weather.service';
 import {
   WeatherResponseDto,
   SearchHistoryResponseDto,
-  ForecastResponseDto,
-  CityResponseDto,
 } from '../dto/weather-response.dto';
 import { GetWeatherDto } from '../dto/weather-request.dto';
 
@@ -43,8 +41,11 @@ export class WeatherController {
     try {
       this.logger.log(`Fetching current weather for: ${query.city}`);
       return await this.weatherService.getCurrentWeather(query.city);
-    } catch (error: any) {
-      this.logger.error(`Error fetching weather: ${error.message}`);
+    } catch (error: unknown) {
+      // Changed from any to unknown
+      this.logger.error(
+        `Error fetching weather: ${error instanceof Error ? error.message : 'Unknown error'}`,
+      ); // Fixed unsafe access
 
       if (error instanceof HttpException) {
         throw error;
@@ -55,7 +56,9 @@ export class WeatherController {
         HttpStatus.INTERNAL_SERVER_ERROR,
       );
     }
-  } // GET /api/weather/forecast?city=London (Currently returns same as current - could be extended)
+  }
+
+  // GET /api/weather/forecast?city=London (Currently returns same as current - could be extended)
   @Get('forecast')
   async getForecast(
     @Query() query: GetWeatherDto,
@@ -64,8 +67,11 @@ export class WeatherController {
       this.logger.log(`Fetching forecast for: ${query.city}`);
       // For now, return current weather - this could be extended to actual forecasts
       return await this.weatherService.getCurrentWeather(query.city);
-    } catch (error) {
-      this.logger.error(`Error fetching forecast: ${error.message}`);
+    } catch (error: unknown) {
+      // Changed from any to unknown
+      this.logger.error(
+        `Error fetching forecast: ${error instanceof Error ? error.message : 'Unknown error'}`,
+      ); // Fixed unsafe access
 
       if (error instanceof HttpException) {
         throw error;
@@ -83,8 +89,11 @@ export class WeatherController {
   async getSearchHistory(): Promise<SearchHistoryResponseDto[]> {
     try {
       return await this.weatherService.getSearchHistory();
-    } catch (error) {
-      this.logger.error(`Failed to fetch search history: ${error.message}`);
+    } catch (error: unknown) {
+      // Changed from any to unknown
+      this.logger.error(
+        `Failed to fetch search history: ${error instanceof Error ? error.message : 'Unknown error'}`,
+      ); // Fixed unsafe access
       throw new HttpException(
         'Failed to fetch search history',
         HttpStatus.INTERNAL_SERVER_ERROR,
