@@ -21,7 +21,9 @@ async function bootstrap() {
 
   const config = new DocumentBuilder()
     .setTitle('Weather Forecast API')
-    .setDescription('A comprehensive weather forecast service that provides current weather and forecasts for cities worldwide')
+    .setDescription(
+      'A comprehensive weather forecast service that provides current weather and forecasts for cities worldwide',
+    )
     .setVersion('1.0')
     .addTag('Weather API', 'Weather data endpoints')
     .build();
@@ -37,9 +39,15 @@ async function bootstrap() {
   const port = process.env.PORT || 3000;
   await app.listen(port);
 
-  console.log(`🌤️  Weather Forecast Service running on: http://localhost:${port}`);
-  console.log(`📊 API Documentation available at: http://localhost:${port}/api/docs`);
-  console.log(`🔗 API endpoints available at: http://localhost:${port}/api/weather/current?city=London`);
+  console.log(
+    `🌤️  Weather Forecast Service running on: http://localhost:${port}`,
+  );
+  console.log(
+    `📊 API Documentation available at: http://localhost:${port}/api/docs`,
+  );
+  console.log(
+    `🔗 API endpoints available at: http://localhost:${port}/api/weather/current?city=London`,
+  );
   console.log(`🌐 Dashboard available at: http://localhost:${port}`);
 }
 
