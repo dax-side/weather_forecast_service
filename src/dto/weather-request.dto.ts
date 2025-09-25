@@ -1,5 +1,6 @@
 import { IsString, IsNotEmpty, Length } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
+import { Transform } from 'class-transformer';
 
 export class GetWeatherDto {
   @ApiProperty({
@@ -11,6 +12,7 @@ export class GetWeatherDto {
   @IsString()
   @IsNotEmpty()
   @Length(1, 100)
+  @Transform(({ value }: { value: string }) => value?.trim()) // Added proper typing
   city: string;
 }
 
@@ -24,5 +26,6 @@ export class SearchCityDto {
   @IsString()
   @IsNotEmpty()
   @Length(1, 100)
+  @Transform(({ value }: { value: string }) => value?.trim()) // Added proper typing
   cityName: string;
 }
