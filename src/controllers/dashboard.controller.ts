@@ -1,12 +1,4 @@
-import {
-  Controller,
-  Get,
-  Post,
-  Body,
-  Render,
-  Redirect,
-  Logger,
-} from '@nestjs/common';
+import { Controller, Get, Post, Body, Render, Logger } from '@nestjs/common';
 import { EnhancedWeatherService } from '../services/enhanced-weather.service';
 import { SearchCityDto } from '../dto/weather-request.dto';
 
@@ -26,8 +18,11 @@ export class DashboardController {
         title: 'Weather Forecast Service',
         history,
       };
-    } catch (error) {
-      this.logger.error('Failed to load search history:', error);
+    } catch (error: unknown) {
+      // Changed to unknown
+      this.logger.error(
+        `Failed to load search history: ${error instanceof Error ? error.message : 'Unknown error'}`,
+      ); // Fixed unsafe access
       return {
         title: 'Weather Forecast Service',
         history: [],
@@ -55,14 +50,17 @@ export class DashboardController {
         history,
         success: true,
       };
-    } catch (error) {
-      this.logger.error(`Dashboard search error: ${error.message}`);
+    } catch (error: unknown) {
+      // Changed to unknown
+      this.logger.error(
+        `Dashboard search error: ${error instanceof Error ? error.message : 'Unknown error'}`,
+      ); // Fixed unsafe access
 
       const history = await this.weatherService.getSearchHistory();
 
       return {
         title: 'Weather Search Error',
-        error: error.message,
+        error: error instanceof Error ? error.message : 'Unknown error', // Fixed unsafe assignment and access
         history,
         success: false,
       };
